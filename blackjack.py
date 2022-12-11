@@ -14,7 +14,12 @@ import random
 
 def make_card(vs, style):
     value = vs[0]
-    suit =  vs[1]
+    if value == '0':
+        value = '10'
+    else:
+        value += ' '
+
+    suit =  vs[1] + ' '
 
     # fuck discord
     # suit = suit + '\uFE0E'
@@ -53,8 +58,8 @@ def make_card(vs, style):
 ──────┘'''
     card_part = f'''\
 ┌──
-│{value} 
-│{suit} 
+│{value}
+│{suit}
 │  
 │  
 │  
@@ -154,8 +159,7 @@ def main():
     if len(play_deck) < 4:
         play_deck = generate_deck()
     # 5-9 seats
-    players = {'discard':[],
-               'Dealer': [],
+    players = {'Dealer': [],
                'Player': []}
     
     deal()
@@ -204,8 +208,6 @@ play_deck = generate_deck()
 
 while kill == False:
     main()
-    for player in players:
-        print(player)
     if gameover == 'q':
         break
     show_board()
