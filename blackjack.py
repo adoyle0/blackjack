@@ -78,6 +78,9 @@ def make_card(vs, style):
         return card_part
 
 def generate_deck(n_decks):
+    n_decks = int(n_decks)
+    if n_decks > 8:
+        n_decks = 8
     suits = '♠♥♦♣'
     cards = 'A234567890JQK'
     deck = []
@@ -88,13 +91,9 @@ def generate_deck(n_decks):
     return deck
 
 def draw_card(player):
-    global players
-    global play_deck
     players.get(player).append(play_deck.pop(random.choice(range(len(play_deck)))))
 
 def print_hand(player):
-    global players
-    global game_active
     player_cards = [make_card(card,'card_part') for card in players.get(player)]
     if player == 'Dealer' and game_active == True:
         player_cards[0] = make_card('na','hidden_part')
@@ -108,13 +107,11 @@ def print_hand(player):
         print(carriage)
 
 def deal():
-    global players
     for i in range(2):
         for player in players:
             draw_card(player)
 
 def show_board():
-    global players
     print('\033c', end='')
     print(title)
     for player in players:
@@ -123,22 +120,20 @@ def show_board():
         print_hand(player)
 
 def score_hand(player):
-    global players
     hand =   [card[0] for card in players.get(player)]
+
+    if hand == ['0','1'] or hand == ['1','0']:
+        game_active = False
+        gameover = player, 'has blackjack!'
+        return [21]
+
     hand =   ['1' if card == 'A' else card for card in hand]
     scores = [10 if card in 'JQK0' else int(card) for card in hand]
     return scores
 
 def player_score(player):
-    global players
-    global game_active
-    global gameover
-
     card_scores = score_hand(player)
 
-    if len(card_scores) == 2 and sum(card_scores) == 11:
-        game_active = False
-        gameover = player, 'has blackjack!'
 
     if sum(card_scores) < 11:
         if 1 in card_scores:
@@ -152,14 +147,12 @@ def player_score(player):
         return sum(card_scores)
 
 def main():
-    global kill
     global players
     global play_deck
     global game_active
     global gameover
 
     gameover = 'Error'
-    num_decks = 1
 
     # 1-8 decks
     if len(play_deck) < 4:
@@ -210,9 +203,10 @@ def main():
             gameover = 'Bust!'
             game_active = False
 
-
 kill = False
 play_deck = []
+
+num_decks = input('How many decks? (1-8): ')
 
 while kill == False:
     main()
