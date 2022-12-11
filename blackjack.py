@@ -1,4 +1,4 @@
-motd = '''\
+title = '''\
                                                         
  .oPYo. 8               8        o               8      
  8   `8 8               8        8               8      
@@ -14,6 +14,7 @@ import random
 
 def make_card(vs, style):
     value = vs[0]
+
     if value == '0':
         value = '10'
     else:
@@ -21,8 +22,8 @@ def make_card(vs, style):
 
     suit =  vs[1] + ' '
 
-    # fuck discord
-    # suit = suit + '\uFE0E'
+    # request text render of glyph but can break some fonts
+    # suit += '\uFE0E'
 
     deck = '''\
 ┌────────┐┐┐┐┐┐
@@ -76,10 +77,15 @@ def make_card(vs, style):
     if style == 'card_part':
         return card_part
 
-def generate_deck():
+def generate_deck(n_decks):
     suits = '♠♥♦♣'
     cards = 'A234567890JQK'
-    return [card + suit for card in cards for suit in suits]
+    deck = []
+
+    while n_decks > 0:
+        deck +=  [card + suit for card in cards for suit in suits]
+        n_decks -= 1
+    return deck
 
 def draw_card(player):
     global players
@@ -105,18 +111,16 @@ def deal():
     global players
     for i in range(2):
         for player in players:
-            if player != 'discard':
-                draw_card(player)
+            draw_card(player)
 
 def show_board():
     global players
     print('\033c', end='')
-    print(motd)
+    print(title)
     for player in players:
-        if player != 'discard':
-            print('  '+player,
-            '\t\t\t\t      Score:',player_score(player))
-            print_hand(player)
+        print('  '+player,
+        '\t\t\t\t      Score:',player_score(player))
+        print_hand(player)
 
 def score_hand(player):
     global players
@@ -134,7 +138,7 @@ def player_score(player):
 
     if len(card_scores) == 2 and sum(card_scores) == 11:
         game_active = False
-        gameover = player + 'has blackjack!'
+        gameover = player, 'has blackjack!'
 
     if sum(card_scores) < 11:
         if 1 in card_scores:
@@ -155,9 +159,12 @@ def main():
     global gameover
 
     gameover = 'Error'
+    num_decks = 1
+
     # 1-8 decks
     if len(play_deck) < 4:
-        play_deck = generate_deck()
+        play_deck = generate_deck(num_decks)
+
     # 5-9 seats
     players = {'Dealer': [],
                'Player': []}
@@ -183,6 +190,7 @@ def main():
     
         if user_input.lower() == 's':
             game_active = False
+
             while player_score('Dealer') < 17:
                 draw_card('Dealer')
             if player_score('Dealer') > 21:
@@ -204,7 +212,7 @@ def main():
 
 
 kill = False
-play_deck = generate_deck()
+play_deck = []
 
 while kill == False:
     main()
