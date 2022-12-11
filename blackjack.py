@@ -22,7 +22,7 @@ def make_card(vs, style):
 
     suit =  vs[1] + ' '
 
-    # request text render of glyph but can break some fonts
+    # request text render of preceeding glyph but can break some fonts
     # suit += '\uFE0E'
 
     deck = '''\
@@ -68,13 +68,13 @@ def make_card(vs, style):
 
     if style == 'deck': 
         return deck
-    if style == 'card_rest':
+    elif style == 'card_rest':
         return card_rest
-    if style == 'hidden_part':
+    elif style == 'hidden_part':
         return hidden_part
-    if style == 'hidden_rest':
+    elif style == 'hidden_rest':
         return hidden_rest
-    if style == 'card_part':
+    elif style == 'card_part':
         return card_part
 
 def generate_deck(n_decks):
@@ -120,7 +120,7 @@ def show_board():
         print_hand(player)
 
 def score_hand(player):
-    hand =   [card[0] for card in players.get(player)]
+    hand = [card[0] for card in players.get(player)]
 
     if hand == ['0','1'] or hand == ['1','0']:
         game_active = False
@@ -133,7 +133,6 @@ def score_hand(player):
 
 def player_score(player):
     card_scores = score_hand(player)
-
 
     if sum(card_scores) < 11:
         if 1 in card_scores:
@@ -154,7 +153,6 @@ def main():
 
     gameover = 'Error'
 
-    # 1-8 decks
     if len(play_deck) < 4:
         play_deck = generate_deck(num_decks)
 
@@ -171,33 +169,35 @@ def main():
     
         if user_input.lower() == 'q':
             gameover = 'q'
-            kill = True
             game_active = False
-            break
 
-        if user_input.lower() == 'r':
+        elif user_input.lower() == 'r':
             game_active = False
         
-        if user_input.lower() == 'h':
+        elif user_input.lower() == 'h':
             draw_card('Player')
     
-        if user_input.lower() == 's':
+        elif user_input.lower() == 's':
             game_active = False
+
+            if player_score('Dealer') == 21:
+                gameover = 'Dealer has blackjack!'
+                break
 
             while player_score('Dealer') < 17:
                 draw_card('Dealer')
+
             if player_score('Dealer') > 21:
                 gameover = 'Dealer Bust!'
-                break
-            if player_score('Dealer') == player_score('Player'):
+
+            elif player_score('Dealer') == player_score('Player'):
                 gameover = 'Push.'
-                break
-            if player_score('Dealer') > player_score('Player'):
+
+            elif player_score('Dealer') > player_score('Player'):
                 gameover = 'House wins.'
-                break
-            if player_score('Dealer') < player_score('Player'):
+
+            elif player_score('Dealer') < player_score('Player'):
                 gameover = 'You win!'
-                break
 
         if player_score('Player') > 21:
             gameover = 'Bust!'
@@ -211,6 +211,7 @@ num_decks = input('How many decks? (1-8): ')
 while kill == False:
     main()
     if gameover == 'q':
+        kill = True
         break
     show_board()
     user_input = input(gameover + '\nPlay again? [Y/n] ')
