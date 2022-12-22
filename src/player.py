@@ -2,6 +2,8 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = []
+        self.blackjack = False
+        self.bust = False
 
     def tally_hand(self):
         cards = [card[0] for card in self.hand]
@@ -18,4 +20,12 @@ class Player:
 
     def bust(self):
         if self.score() > 21:
-            return True
+            self.bust = True
+
+    def blackjack(self):
+        if self.tally_hand() in [[10,11],[11,10]]:
+            self.blackjack = True
+
+    def check(self):
+        self.bust()
+        self.blackjack()
