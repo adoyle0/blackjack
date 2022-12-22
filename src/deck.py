@@ -1,7 +1,9 @@
 import random
 
 class Deck:
-    cards = []
+    def __init__(self, n_decks):
+        self.cards = []
+        self.n_decks = n_decks
 
     def count(self):
         return len(self.cards)
@@ -16,10 +18,12 @@ class Deck:
         while n_decks > 0:
             self.cards +=  [card + suit for card in cards for suit in suits]
             n_decks -= 1
-    
-    def count_below(self, n):
-        if self.count() < n:
-            return True
+
+    def check(self):
+        if self.count() < 4:
+            self.shuffle(self.n_decks)
 
     def draw(self):
+        self.check()
         return self.cards.pop(random.choice(range(self.count())))
+

@@ -6,14 +6,8 @@ def main():
     global kill
     global screen
     global num_decks
-    deck = Deck()
+    global deck
     game = GameMaster()
-
-    if num_decks == 'q':
-        game.active = False
-
-    if deck.count_below(4):
-        deck.shuffle(num_decks)
 
     for player in game.players:
         for _ in range(2):
@@ -23,7 +17,10 @@ def main():
     player = game.player
 
     while game.active:
-        screen.update(game.players)
+        screen.update(game)
+        if player.blackjack():
+            game.active = False
+            print('Blackjack!')
 
         if game.active:
             user_input = input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
@@ -41,19 +38,23 @@ def main():
                 game.active = False
             case 'h':
                 player.hand.append(deck.draw())
+                if player.bust(game):
+                    game.active = False
             case 's':
-                while dealer.score() < 17:
+                game.active = False
+                while dealer.score(game) < 17:
                     dealer.hand.append(deck.draw())
 
-        screen.update(game.players)
-        game.score()
+        screen.update(game)
 
         if not game.active:
+            game.score()
             user_input = input('Play again? [Y/n] ')
 
 kill = False
 screen = Screen()
-print(screen.show_intro())
+print(screen.intro)
 num_decks = input('How many decks? (1-8): ')
+deck = Deck(num_decks)
 while not kill:
     main()

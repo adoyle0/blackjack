@@ -10,18 +10,18 @@ class GameMaster:
     def score(self):
         status = 'Error'
 
-        if self.dealer.score() == self.player.score():
+        if self.dealer.score(self) == self.player.score(self):
             self.active = False
             status = 'Push.'
-        elif self.dealer.score() > self.player.score():
+        elif self.dealer.score(self) > self.player.score(self):
             self.active = False
             status = 'House wins.'
-        elif self.dealer.score() < self.player.score():
+        elif self.dealer.score(self) < self.player.score(self):
             self.active = False
             status = 'You win!'
 
         for player in self.players:
-            if player.score() > 21:
+            if player.score(self) > 21:
                 self.active = False
                 status = player.name + ' Bust!'
         print(status)
