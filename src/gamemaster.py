@@ -24,4 +24,9 @@ class GameMaster:
             if player.score(self) > 21:
                 self.active = False
                 status = player.name + ' Bust!'
+
+        if self.dealer.blackjack(self):
+            self.active = False
+            status = 'Dealer Blackjack!'
+
         print(status)

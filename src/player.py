@@ -24,6 +24,8 @@ class Player:
         if self.score(game) > 21:
             return True
 
-    def blackjack(self):
-        if self.tally_hand() in [[10,11],[11,10]]:
+    def blackjack(self, game):
+        if game.active and self.name == 'Dealer':
+            return False
+        elif self.tally_hand() in [[10,11],[11,10]]:
             return True

@@ -19,7 +19,7 @@ def main():
 
     while game.active:
         screen.update(game)
-        if player.blackjack():
+        if player.blackjack(game):
             game.active = False
             print('Blackjack!')
             break
@@ -44,11 +44,9 @@ def main():
                     while dealer.score(game) < 17:
                         dealer.hand.append(deck.draw())
 
-
         screen.update(game)
         if not game.active:
             game.score()
-
 
 kill = False
 screen = Screen()
@@ -56,6 +54,9 @@ screen = Screen()
 print(screen.intro)
 
 num_decks = input('How many decks? (1-8): ')
+if num_decks == 'q':
+    kill = True
+
 deck = Deck(num_decks)
 
 while not kill:
@@ -63,5 +64,7 @@ while not kill:
     user_input = input('Play again? [Y/n] ')
     match user_input.lower():
         case 'n':
+            kill = True
+        case 'q':
             kill = True
 
