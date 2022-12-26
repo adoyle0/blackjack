@@ -11,6 +11,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 :......:..:.....::.....:..::......::.....::.....:..::...
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::'''
+
         self.clear = '\033c' 
         self.intro = self.clear + self.title
         self.deck = '''\
@@ -21,6 +22,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 │░░░░░░░░││││││
 │░░░░░░░░││││││
 └────────┘┘┘┘┘┘'''
+
         self.hidden_part = f'''\
 ┌──
 │░░
@@ -29,6 +31,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 │░░
 │░░
 └──'''
+
         self.hidden_rest = f'''\
 ──────┐
 ░░░░░░│
@@ -37,6 +40,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 ░░░░░░│
 ░░░░░░│
 ──────┘'''
+
         self.card_rest = f'''\
 ──────┐
       │
@@ -50,6 +54,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
         value = vs[0]
         value = '10' if value == '0' else value + ' '
         suit =  vs[1] + ' '
+
         # request text (not emoji) render of preceeding glyph but can break some fonts
         # suit += '\uFE0E'
 
@@ -94,6 +99,6 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
         print(self.clear)
         print(self.title)
         for player in game.players:
-            print('  '+player.name,
-                  '\t\t\t\t      Score:',player.score(game))
+            print('  '+player.name,'''\
+                                     Score:''', player.score(game))
             self.print_hand(player, game)

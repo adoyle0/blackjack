@@ -15,13 +15,13 @@ class Deck:
         n_decks = 8 if n_decks > 8 else n_decks
         suits = '♠♥♦♣'
         cards = 'A234567890JQK'
-      # cards = 'A0A0A0A0A0A0A'
+
         while n_decks > 0:
             self.cards +=  [card + suit for card in cards for suit in suits]
             n_decks -= 1
 
     def check(self):
-        if self.count() < 4:
+        if self.count() < 1:
             self.shuffle(self.n_decks)
 
     def draw(self):
