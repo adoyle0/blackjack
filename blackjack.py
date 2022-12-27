@@ -16,7 +16,6 @@ def main():
     dealer = game.dealer
     player = game.player
 
-
     while game.active:
         screen.update(game)
         if player.blackjack(game):
@@ -67,4 +66,3 @@ while not kill:
             kill = True
         case 'q':
             kill = True
-
