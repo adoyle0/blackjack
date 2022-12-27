@@ -12,7 +12,6 @@ class Deck:
         self.cards = []
         n_decks = 1 if not n_decks or n_decks not in '12345678' else n_decks
         n_decks = int(n_decks)
-        n_decks = 8 if n_decks > 8 else n_decks
         suits = '♠♥♦♣'
         cards = 'A234567890JQK'
 
