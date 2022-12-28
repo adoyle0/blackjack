@@ -6,8 +6,7 @@ class Player:
     def tally_hand(self):
         cards = [card[0] for card in self.hand]
         cards = ['11' if card == 'A' else card for card in cards]
-        scores = [10 if card in 'JQK0' else int(card) for card in cards]
-        return scores
+        return  [10 if card in 'JQK0' else int(card) for card in cards]
 
     def score(self, game):
         if self.name == 'Dealer' and game.active:
