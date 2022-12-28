@@ -25,4 +25,4 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 │  │        │
 └──└────────┘
 152 cards left in deck.
-[H]it or [S]tand? ```
+[H]it or [S]tand? 
