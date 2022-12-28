@@ -1,10 +1,10 @@
 from src.deck import Deck
-from src.display import CLI
+from src.io import CLI
 from src.gamemaster import GameMaster
 
 def main():
     global kill
-    global display
+    global ui
     global num_decks
     global deck
     game = GameMaster()
@@ -17,7 +17,7 @@ def main():
     player = game.player
 
     while game.active:
-        display.update(game)
+        ui.update(game)
 
         if game.active:
             user_input = input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
@@ -38,14 +38,13 @@ def main():
                     game.active = False
                     while dealer.score(game) < 17:
                         dealer.hand.append(deck.draw())
-
-        display.update(game)
+            ui.update(game)
 
 kill = False
-display = CLI()
-display.intro()
+ui = CLI()
+ui.intro()
 
-num_decks = input('How many decks? (1-8): ')
+num_decks = ui.get_decks()
 if num_decks == 'q':
     kill = True
 
@@ -53,9 +52,5 @@ deck = Deck(num_decks)
 
 while not kill:
     main()
-    user_input = input('Play again? [Y/n] ')
-    match user_input.lower():
-        case 'n':
-            kill = True
-        case 'q':
-            kill = True
+    if not ui.play_again():
+        kill = True

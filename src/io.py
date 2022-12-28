@@ -109,3 +109,15 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
             self.print_hand(player, game)
         if not game.active:
             print(game.score())
+
+    def get_decks(self):
+        return input('How many decks? (1-8): ')
+
+    def play_again(self):
+        match input('Play again? [Y/n] ').lower():
+            case 'n':
+                return False
+            case 'q':
+                return False
+            case _:
+                return True
