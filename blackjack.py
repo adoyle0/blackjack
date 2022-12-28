@@ -20,9 +20,7 @@ def main():
         ui.update(game)
 
         if game.active:
-            user_input = input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
-
-            match user_input.lower():
+            match ui.player_move(deck).lower():
                 case 'y':
                     game.active = False
                 case 'q':

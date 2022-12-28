@@ -121,3 +121,6 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
                 return False
             case _:
                 return True
+
+    def player_move(self, deck):
+        return input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
