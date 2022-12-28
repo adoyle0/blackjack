@@ -1,4 +1,4 @@
-class Screen:
+class CLI:
     def __init__(self):
         self.title = '''\
                                                         
@@ -12,8 +12,6 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::'''
 
-        self.clear = '\033c' 
-        self.intro = self.clear + self.title
         self.deck = '''\
 ┌────────┐┐┐┐┐┐
 │░░░░░░░░││││││
@@ -95,10 +93,19 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
                 carriage += chunk
             print(carriage)
 
+    def clear(self):
+        print('\033c')
+
+    def intro(self):
+        self.clear()
+        print(self.title)
+
     def update(self, game):
-        print(self.clear)
+        self.clear()
         print(self.title)
         for player in game.players:
             print('  '+player.name,'''\
                                      Score:''', player.score(game))
             self.print_hand(player, game)
+        if not game.active:
+            print(game.score())
