@@ -40,7 +40,7 @@ def main():
 
 kill = False
 ui = CLI()
-ui.intro()
+print(ui.intro)
 
 num_decks = ui.get_decks()
 if num_decks == 'q':

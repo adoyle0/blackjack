@@ -12,6 +12,9 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::'''
 
+        self.clear = '\033c'
+        self.intro = self.clear + self.title
+
         self.deck = '''\
 ┌────────┐┐┐┐┐┐
 │░░░░░░░░││││││
@@ -70,30 +73,27 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 
         if player.name == 'Dealer' and game.active:
             card_stack[0] = self.hidden_part
-        
+
         card_slices = [card.splitlines() for card in card_stack]
+        card_height = len(card_slices[0])
 
-        lines = []
-        for i in range(7):
-            lines.append(''.join([card_slice[i] for card_slice in card_slices]) + '\n')
-        return ''.join(lines)
+        buffer = ''
+        for i in range(card_height):
+            buffer += ''.join([card_slice[i] for card_slice in card_slices])+'\n'
 
-    def clear(self):
-        print('\033c')
+        return buffer[:-1]
 
-    def intro(self):
-        self.clear()
-        print(self.title)
+    def show_players(self, game):
+        buffer = ''
+        for player in game.players:
+            buffer += f"\n  {player.name}{37*' '}Score: {player.score(game)}\n{self.draw_player_hand(player, game)}"
+
+        return buffer
 
     def update(self, game):
-        self.clear()
-        print(self.title)
-        for player in game.players:
-            print('  '+player.name,'''\
-                                     Score:''', player.score(game))
-            print(self.draw_player_hand(player, game))
-        if not game.active:
-            print(game.score())
+        print(self.clear + self.title +
+              self.show_players(game) +\
+              ('\n'+game.score() if not game.active else ''))
 
     def get_decks(self):
         return input('How many decks? (1-8): ')
