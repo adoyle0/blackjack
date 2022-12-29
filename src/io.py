@@ -48,15 +48,14 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
       │
 ──────┘'''
 
-    def make_card(self, vs, style):
-        value = vs[0]
-        value = '10' if value == '0' else value + ' '
+    def draw_card_part(self, vs):
+        value = '10' if vs[0] == '0' else vs[0] + ' '
         suit =  vs[1] + ' '
 
         # request text (not emoji) render of preceeding glyph but can break some fonts
         # suit += '\uFE0E'
 
-        card_part = f'''\
+        return f'''\
 ┌──
 │{value}
 │{suit}
@@ -65,33 +64,19 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 │  
 └──'''
 
-        match style:
-            case 'deck': 
-                return self.deck
-            case 'card_rest':
-                return self.card_rest
-            case 'hidden_part':
-                return self.hidden_part
-            case 'hidden_rest':
-                return self.hidden_rest
-            case 'card_part':
-                return card_part
-
-    def print_hand(self, player, game):
-        player_cards = [self.make_card(card,'card_part') for card in player.hand]
+    def draw_player_hand(self, player, game):
+        card_stack = [self.draw_card_part(card) for card in player.hand]
+        card_stack.append(self.card_rest)
 
         if player.name == 'Dealer' and game.active:
-            player_cards[0] = self.make_card('na','hidden_part')
+            card_stack[0] = self.hidden_part
+        
+        card_slices = [card.splitlines() for card in card_stack]
 
-        player_cards.append(self.make_card('na','card_rest'))
-        card_slices = [str(card).splitlines() for card in player_cards]
-
+        lines = []
         for i in range(7):
-            clist = [card_slice[i] for card_slice in card_slices]
-            carriage = ''
-            for chunk in clist:
-                carriage += chunk
-            print(carriage)
+            lines.append(''.join([card_slice[i] for card_slice in card_slices]) + '\n')
+        return ''.join(lines)
 
     def clear(self):
         print('\033c')
@@ -106,7 +91,7 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
         for player in game.players:
             print('  '+player.name,'''\
                                      Score:''', player.score(game))
-            self.print_hand(player, game)
+            print(self.draw_player_hand(player, game))
         if not game.active:
             print(game.score())
 
@@ -124,3 +109,4 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
 
     def player_move(self, deck):
         return input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
+
