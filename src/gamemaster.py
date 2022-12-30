@@ -6,6 +6,7 @@ class GameMaster:
         self.players = [Player('Dealer'), Player('Player')] # 5-9 seats
         self.dealer = self.players[0]
         self.player = self.players[1]
+        self.blackjack = False
 
     def score(self):
         status = 'Error'
@@ -26,6 +27,7 @@ class GameMaster:
                 status = player.name + ' Bust!'
             elif player.blackjack(self):
                 self.active = False
+                self.blackjack = True
                 status = player.name + ' has Blackjack!'
 
         return status

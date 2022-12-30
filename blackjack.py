@@ -18,6 +18,9 @@ def main():
 
     while game.active:
         ui.update(game)
+        for player in game.players:
+            if player.blackjack(game):
+                game.active = False
 
         if game.active:
             match ui.player_move(deck).lower():
