@@ -91,13 +91,12 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
         return buffer
 
     def update(self, game):
-        print(self.clear + self.title +
-              self.show_players(game))
-        for player in game.players:
-            if player.blackjack(game):
-                game.active = False
+        buffer = f'{self.clear}{self.title}{self.show_players(game)}'
         if not game.active:
-            print(game.score())
+            buffer += '\n' + game.score()
+
+        return buffer
+
     def get_decks(self):
         return input('How many decks? (1-8): ')
 
@@ -110,6 +109,6 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
             case _:
                 return True
 
-    def player_move(self, deck):
-        return input(str(deck.count()) + ' cards left in deck.\n[H]it or [S]tand? ')
+    def player_move(self, count):
+        return input(f'{count} cards left in deck.\n[H]it or [S]tand? ')
 

@@ -7,36 +7,16 @@ def main():
     global ui
     global num_decks
     global deck
-    game = GameMaster()
+    game = GameMaster(deck)
 
-    for player in game.players:
-        for _ in range(2):
-            player.hand.append(deck.draw())
-
-    dealer = game.dealer
-    player = game.player
+    game.deal()
 
     while game.active:
-        ui.update(game)
+        print(ui.update(game))
+        if not game.blackjack():
+            game.handle_player_input(ui.player_move(deck.count()), kill)
 
-        if game.active:
-            match ui.player_move(deck).lower():
-                case 'y':
-                    game.active = False
-                case 'q':
-                    game.active = False
-                    kill = True
-                case 'n':
-                    game.active = False
-                case 'h':
-                    player.hand.append(deck.draw())
-                    if player.bust(game):
-                        game.active = False
-                case 's':
-                    game.active = False
-                    while dealer.score(game) < 17:
-                        dealer.hand.append(deck.draw())
-            ui.update(game)
+    print(ui.update(game))
 
 kill = False
 ui = CLI()
