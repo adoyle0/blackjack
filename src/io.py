@@ -98,7 +98,10 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
         return buffer
 
     def get_decks(self):
-        return input('How many decks? (1-8): ')
+        user_input = input('How many decks? (1-8): ')
+        if not user_input:
+            return '1'
+        return user_input
 
     def play_again(self):
         match input('Play again? [Y/n] ').lower():
