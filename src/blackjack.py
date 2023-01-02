@@ -25,39 +25,39 @@ class Blackjack:
             if player.score(self) > 21:
                 self.active = False
                 status = player.name + ' Bust!'
-            elif player.blackjack(self):
+        for player in self.players:
+            if player.blackjack(self):
                 self.active = False
                 status = player.name + ' has Blackjack!'
-
         return status
+    
     def deal(self):
         for player in self.players:
             for _ in range(2):
                 player.hand.append(self.deck.draw())
 
-    def blackjack(self):
+    def check_player_blackjack(self):
         for player in self.players:
             if player.blackjack(self):
                 self.active = False
                 return True
-
         return False
 
-    def handle_player_input(self, input, kill):
-        match input:
-            case 'y':
-                self.active = False
-            case 'q':
-                self.active = False
-                kill = True
-            case 'n':
-                self.active = False
-            case 'h':
-                self.player.hand.append(self.deck.draw())
-                if self.player.bust(self):
-                    self.active = False
-            case 's':
-                self.active = False
-                while self.dealer.score(self) < 17:
-                    self.dealer.hand.append(self.deck.draw())
+    def hit(self):
+        self.player.hand.append(self.deck.draw())
+        if self.player.bust(self):
+            self.active = False
+    def stand(self):
+        self.active = False
+        while self.dealer.score(self) < 17:
+            self.dealer.hand.append(self.deck.draw())
 
+    def update(self, input):
+        if not input:
+            pass
+        elif input in 'yqn':
+            self.active = False
+        elif input == 'h':
+            self.hit()
+        elif input == 's':
+            self.stand()
