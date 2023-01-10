@@ -47,6 +47,7 @@ class Blackjack:
         self.player.hand.append(self.deck.draw())
         if self.player.bust(self):
             self.active = False
+
     def stand(self):
         self.active = False
         while self.dealer.score(self) < 17:

@@ -96,6 +96,3 @@ o8YooP' 8 .oPYo. .oPYo. 8  .o    8 .oPYo. .oPYo. 8  .o
             buffer += '\n' + game.score()
 
         return buffer
-
-
-
